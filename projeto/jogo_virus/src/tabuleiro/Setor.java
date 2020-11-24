@@ -219,6 +219,7 @@ public class Setor {
             if(coordenadaLista.equals(((x+1)+""+y)))
             {
                 naoPodeMudarLado = 1;
+                //System.out.print(naoPodeMudarLado+" Teste");
             }            
         }       
         if(naoPodeMudarLado == 0)

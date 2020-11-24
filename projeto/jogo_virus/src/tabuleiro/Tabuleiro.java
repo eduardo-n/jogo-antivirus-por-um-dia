@@ -115,61 +115,81 @@ public class Tabuleiro {
     
     public void modificarTabuleiro(Setor setorAtual, int jogador, Tabuleiro tabu)
     {
+        System.out.println("\n");
+        System.out.println("-----------------------------------------");
+        System.out.println("|         Antivírus por um dia          |");
+        System.out.println("-----------------------------------------\n");
+        
+        int e = 0;
+        
         Iterator iterator;
         Setor setorNovo = new Setor();
         // Pegando o setor novo do jogador
         iterator = tabu.setoresVisitados.iterator();
-        while(iterator.hasNext())
+       
+        if(jogador == 1)
         {
-            Setor PesqSetorNovo = (Setor) iterator.next();           
-            if(jogador ==1)
+            while(iterator.hasNext())
             {
+                Setor PesqSetorNovo = (Setor) iterator.next(); 
                 if((PesqSetorNovo.getCoordenadaX()+" "+PesqSetorNovo.getCoordenadaY()).equals(tabu.getPosicaoAtualP1()))
                 {  
                     setorNovo = setorAtual.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu);
                 }  
-                
-                // Renomear o setor onde o P2 está posicionado
-                if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
-                {
-                    matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
-                }
-                else
-                {
-                    matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
-
-                    // Convertendo e separando a String da Coordenada do jogador que não moveu
-                    StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP2());
-                    Integer x = Integer.parseInt((String)coordenada.nextElement());
-                    Integer y = Integer.parseInt((String)coordenada.nextElement());
-
-                    matrizTabuleiro[x][y]=""+(jogador+1);
-                }
             }
-            else if(jogador == 2)
+ 
+            // Renomear o setor onde o P2 está posicionado
+            if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
             {
+                // Limpando o campo de P1 antigo quando ele mudar de posição
+                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
+                matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
+            }
+            else
+            {
+                // Limpando o campo de P1 antigo quando ele mudar de posição
+                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
+
+                matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
+
+                // Convertendo e separando a String da Coordenada do jogador que não moveu
+                StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP2());
+                Integer x = Integer.parseInt((String)coordenada.nextElement());
+                Integer y = Integer.parseInt((String)coordenada.nextElement());
+
+                matrizTabuleiro[x][y]=""+(jogador+1);
+            }
+        }
+        else if(jogador == 2)
+        {
+            while(iterator.hasNext())
+            {
+                Setor PesqSetorNovo = (Setor) iterator.next(); 
                 if((PesqSetorNovo.getCoordenadaX()+" "+PesqSetorNovo.getCoordenadaY()).equals(tabu.getPosicaoAtualP2()))
                 {  
                     setorNovo = setorAtual.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu);
                 }  
-                
-                // Renomear o setor onde o P1 está posicionado
-                if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
-                {
-                    matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
-                }
-                else
-                {
-                    matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
+            }
 
-                    // Convertendo e separando a String da Coordenada do jogador que não moveu
-                    StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP1());
-                    Integer x = Integer.parseInt((String)coordenada.nextElement());
-                    Integer y = Integer.parseInt((String)coordenada.nextElement());
+            // Renomear o setor onde o P1 está posicionado
+            if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
+            {
+                matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
+            }
+            else
+            {
+                // Limpando o campo de P2 antigo quando ele mudar de posição
+                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
 
-                    matrizTabuleiro[x][y]=""+(jogador-1);
-                }
-            }                     
+                matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
+
+                // Convertendo e separando a String da Coordenada do jogador que não moveu
+                StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP1());
+                Integer x = Integer.parseInt((String)coordenada.nextElement());
+                Integer y = Integer.parseInt((String)coordenada.nextElement());
+
+                matrizTabuleiro[x][y]=""+(jogador-1);
+            }
         }
         
         if(setorNovo.isLadoCima())

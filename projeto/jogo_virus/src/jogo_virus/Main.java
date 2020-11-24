@@ -20,8 +20,8 @@ public class Main {
         // TODO code application logic here
 
         int comando; // comando digitado pelo usuario
-        int jogador; // numero do jogador desejado para executar as funções
-        
+        int jogador = 1; // numero do jogador desejado para executar as funções
+
         System.out.println("\n");
         System.out.println("-----------------------------------------");
         System.out.println("|         Antivírus por um dia          |");
@@ -41,14 +41,6 @@ public class Main {
         int[] arrayCoordenada = new int[2];
         tabu.ladosBloqueadosIniciais(arrayCoordenada);
 
-        /*
-        Iterator i = tabu.getLadosBloqueados().iterator();
-        while(i.hasNext())
-        {
-            System.out.println(i.next());
-        }
-        */
-
         // Inicializando os Jogadores
         jogadores.JogadorSimples jogSimples = new jogadores.JogadorSimples(2,6);
         jogadores.JogadorSimples jogSuporte = new jogadores.JogadorSimples(1,7);
@@ -57,22 +49,43 @@ public class Main {
         tabuleiro.SetorNormal setorFonte = new tabuleiro.SetorNormal();
         setorFonte = setorFonte.gerarSetorFonte(setorFonte);
 
-        System.out.println("\n\tVez de P1\n");
-        
-        System.out.println("1 - Cima");
-        System.out.println("2 - Direita");
-        System.out.println("3 - Baixo");
-        System.out.println("4 - Esquerda\n");
-        System.out.print("Digite o numero: ");
-
         // Scanner para receber os comandos das jogadas
-        Scanner scanf = new Scanner(System.in);      
-        comando = scanf.nextInt();
+        Scanner scanf = new Scanner(System.in);  
+        int menu = 1;
+        while(menu != 0)
+        {
+            System.out.println("\n\tVez de P"+jogador+"\n");
         
-        // movendo jogador 1 se possível
-        jogSimples.mover(comando, tabu);
-
-  
+            System.out.println("1 - Mover");
+            System.out.println("2 - Atacar");
+            System.out.println("3 - Procurar");
+            System.out.println("4 - Sair do jogo");
+            System.out.print("\nDigite o numero: ");
+            comando = scanf.nextInt();
+            
+            switch(comando){
+                
+                case 1:
+                    System.out.println("\n1 - Cima");
+                    System.out.println("2 - Direita");
+                    System.out.println("3 - Baixo");
+                    System.out.println("4 - Esquerda\n");
+                    System.out.print("Digite o numero: ");
+                    comando = scanf.nextInt();
+                    // movendo jogador 1 se possível
+                    jogSimples.mover(comando, tabu);
+                    break;
+                case 2:
+                    // ataque
+                case 3:
+                    // procurar
+                case 4:
+                    //sair do while    
+                    menu=0;
+                default:
+                    System.out.println("Digite um comando valido.");
+            }
+        }
     }
 }
 

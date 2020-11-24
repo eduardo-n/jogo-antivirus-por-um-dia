@@ -110,6 +110,8 @@ public class JogadorSimples extends Participantes {
             {
                 // quando null ( ERRO )
             }
+            
+            tabu.modificarTabuleiro(setorAtual, 1, tabu);
         }
         else if(comando == 3 && setorAtual.isLadoBaixo())
         {
