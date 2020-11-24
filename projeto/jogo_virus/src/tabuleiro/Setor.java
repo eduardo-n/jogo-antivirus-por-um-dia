@@ -7,8 +7,10 @@ package tabuleiro;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 public class Setor {
     
@@ -78,15 +80,229 @@ public class Setor {
     public void setLadoCima(boolean ladoCima) {
         this.ladoCima = ladoCima;
     }
-}
+    
+    public Setor getSetorPorCoordenada(String coordenada, tabuleiro.Tabuleiro tabu)
+    {
+        Iterator i = tabu.setoresVisitados.iterator();
+        while(i.hasNext())
+        {
+            Setor setor = (Setor) i.next();
+            
+            if((setor.getCoordenadaX()+" "+setor.getCoordenadaY()).equals(coordenada))
+            {
+                return setor;
+            }            
+        }
+        return null;
+    }
+    
+    public void initSetor(String posicaoNova, tabuleiro.Tabuleiro tabu, int comando)
+    {
+        // Numero aleatorio para decidir o tipo do setor
+        Random random = new Random();
+        int numeroRandom = random.nextInt(2);
+        
+        Setor novoSetor;      
+        if(numeroRandom == 0)
+        {
+            novoSetor = new SetorNormal();
+        }
+        else if(numeroRandom == 1)
+        {
+            novoSetor = new SetorOculto();
+        }
+        else
+        {
+            novoSetor = new SetorPrivado();
+        }
+        
+        // Convertendo e separando a String da nova Coordenada
+        StringTokenizer coordenada = new StringTokenizer(posicaoNova);
+        Integer x = Integer.parseInt((String)coordenada.nextElement());
+        Integer y = Integer.parseInt((String)coordenada.nextElement());
+        
+        // Setando a coordenada do novo setor
+        novoSetor.setCoordenadaX(x);
+        novoSetor.setCoordenadaY(y);
 
+        // Verificando os 4 lados para saber onde deve gerar porta ou parede      
+        int naoPodeMudarLado = 0;
+        Iterator i;
+        
+        // BLOCO - Cima
+        i = tabu.ladosBloqueados.iterator();
+        while(i.hasNext())
+        {
+            String coordenadaLista = (String) i.next();
+            if(coordenadaLista.equals((x-1)+""+y))
+            {
+                naoPodeMudarLado = 1;
+            }            
+        }       
+        if(naoPodeMudarLado == 0)
+        {
+            // Verificar se o setor de cima já foi criado
+            i = tabu.setoresVisitados.iterator();
+            while(i.hasNext())
+            {
+                Setor setorVisitado = (Setor) i.next();
+                if((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()).equals((x-2)+" "+y))
+                {
+                    naoPodeMudarLado = 1;  
+                    // Setando o lado de cima do novo setor igual ao lado de baixo do setor de cima
+                    novoSetor.setLadoCima(getSetorPorCoordenada((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()), tabu).isLadoBaixo());
+                }            
+            }
+        }
+        if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
+        {
+            numeroRandom = random.nextInt(9);
+            if(numeroRandom <= 2)
+            {
+                novoSetor.setLadoCima(false);
+            }
+            else
+            {
+                novoSetor.setLadoCima(true);
+            }
+        }
+        
+        naoPodeMudarLado = 0; // zerando a variavel para os proximos lados
+        // Fim BLOCO - Cima
+        
+        // BLOCO - Direita
+        i = tabu.ladosBloqueados.iterator();
+        while(i.hasNext())
+        {
+            String coordenadaLista = (String) i.next();
+            if(coordenadaLista.equals((x+""+(y+1))))
+            {
+                naoPodeMudarLado = 1;
+            }            
+        }       
+        if(naoPodeMudarLado == 0)
+        {
+            // Verificar se o setor da direita já foi criado
+            i = tabu.setoresVisitados.iterator();
+            while(i.hasNext())
+            {
+                Setor setorVisitado = (Setor) i.next();
+                if((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()).equals(x+" "+(y+4)))
+                {
+                    naoPodeMudarLado = 1;   
+                    // Setando o lado da direita do novo setor igual ao lado da esquerda do setor da direita
+                    novoSetor.setLadoDir(getSetorPorCoordenada((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()), tabu).isLadoEsq());
+                }            
+            }
+        }
+        if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
+        {
+            numeroRandom = random.nextInt(9);
+            if(numeroRandom <= 2)
+            {
+                novoSetor.setLadoDir(false);
+            }
+            else
+            {
+                novoSetor.setLadoDir(true);
+            }
+        }
+        
+        naoPodeMudarLado = 0; // zerando a variavel para os proximos lados
+        // Fim BLOCO - Direita
+        
+        // BLOCO - Baixo
+        i = tabu.ladosBloqueados.iterator();
+        while(i.hasNext())
+        {
+            String coordenadaLista = (String) i.next();
+            if(coordenadaLista.equals(((x+1)+""+y)))
+            {
+                naoPodeMudarLado = 1;
+            }            
+        }       
+        if(naoPodeMudarLado == 0)
+        {
+            // Verificar se o setor de baixo já foi criado
+            i = tabu.setoresVisitados.iterator();
+            while(i.hasNext())
+            {
+                Setor setorVisitado = (Setor) i.next();
+                if((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()).equals((x+2)+" "+y))
+                {
+                    naoPodeMudarLado = 1;   
+                    // Setando o lado de baixo do novo setor igual ao lado de cima do setor de baixo
+                    novoSetor.setLadoBaixo(getSetorPorCoordenada((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()), tabu).isLadoCima());
+                }            
+            }
+        }
+        if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
+        {
+            numeroRandom = random.nextInt(9);
+            if(numeroRandom <= 2)
+            {
+                novoSetor.setLadoBaixo(false);
+            }
+            else
+            {
+                novoSetor.setLadoBaixo(true);
+            }
+        }
+        
+        naoPodeMudarLado = 0; // zerando a variavel para os proximos lados
+        // Fim BLOCO - Baixo
+        
+        // BLOCO - Esquerda
+        i = tabu.ladosBloqueados.iterator();
+        while(i.hasNext())
+        {
+            String coordenadaLista = (String) i.next();
+            if(coordenadaLista.equals((x+""+(y-2))))
+            {
+                naoPodeMudarLado = 1;
+            }            
+        }       
+        if(naoPodeMudarLado == 0)
+        {
+            // Verificar se o setor da esquerda já foi criado
+            i = tabu.setoresVisitados.iterator();
+            while(i.hasNext())
+            {
+                Setor setorVisitado = (Setor) i.next();
+                if((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()).equals(x+" "+(y-4)))
+                {
+                    naoPodeMudarLado = 1;   
+                    // Setando o lado da esquerda do novo setor igual ao lado da direita do setor da esquerda
+                    novoSetor.setLadoEsq(getSetorPorCoordenada((setorVisitado.getCoordenadaX()+" "+setorVisitado.getCoordenadaY()), tabu).isLadoDir());
+                }            
+            }
+        }
+        if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
+        {
+            numeroRandom = random.nextInt(9);
+            if(numeroRandom <= 2)
+            {
+                novoSetor.setLadoEsq(false);
+            }
+            else
+            {
+                novoSetor.setLadoEsq(true);
+            }
+        }
+        // Fim BLOCO - Esquerda
+
+        // Adicionando o novo setor na lista
+        tabu.setoresVisitados.add(novoSetor);
+    }
+}
+   
 /*
    012345678901234567890
 0  |---|---|---|---|---|
 1  |   |   |   |   |   |
 2  |---|---|---|---|---|
 3  |   |   |   | P |   |
-4  |---|---|-*-|---|-*-|
+4  |---|---|-*-|-*-|-*-|
 5  |   |   * C *   *   |
 6  |---|---|-*-|---|-*-|
 7  |   |   |   |   |   |

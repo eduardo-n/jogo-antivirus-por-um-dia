@@ -7,6 +7,8 @@ package tabuleiro;
 
 public class SetorPrivado extends Setor {
     
+    public SetorPrivado(){}
+    
     public SetorPrivado(int coordenadaX, int coordenadaY, boolean ladoEsq, boolean ladoBaixo, boolean ladoDir, boolean ladoCima)
     {
         super(coordenadaX, coordenadaY, ladoEsq, ladoBaixo, ladoDir, ladoCima);

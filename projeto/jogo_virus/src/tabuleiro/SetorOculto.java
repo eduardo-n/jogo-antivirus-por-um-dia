@@ -5,8 +5,9 @@
  */
 package tabuleiro;
 
-
 public class SetorOculto extends Setor{
+    
+    public SetorOculto(){}
     
     public SetorOculto(int coordenadaX, int coordenadaY, boolean ladoEsq, boolean ladoBaixo, boolean ladoDir, boolean ladoCima)
     {

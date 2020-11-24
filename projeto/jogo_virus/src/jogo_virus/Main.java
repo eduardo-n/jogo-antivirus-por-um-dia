@@ -61,20 +61,18 @@ public class Main {
         
         System.out.println("1 - Cima");
         System.out.println("2 - Direita");
-        System.out.println("3 - Esquerda");
-        System.out.println("4 - Baixo\n");
+        System.out.println("3 - Baixo");
+        System.out.println("4 - Esquerda\n");
         System.out.print("Digite o numero: ");
-        
+
         // Scanner para receber os comandos das jogadas
         Scanner scanf = new Scanner(System.in);      
         comando = scanf.nextInt();
         
-        // movendo jogador 1
+        // movendo jogador 1 se possível
         jogSimples.mover(comando, tabu);
-        
-        // Modificando o tabuleiro depois de dados inicializados
-        tabu.modificarTabuleiro();
-        
+
+  
     }
 }
 
