@@ -1,6 +1,7 @@
 package jogadores;
 
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import tabuleiro.Setor;
 
@@ -142,6 +143,32 @@ public class JogadorSuporte extends Participantes {
             System.out.print("\n• Voce nao pode se movimentar atraves de paredes, tente outra direcao.");            
             tabu.modificarTabuleiro(setorAntigo, 2, jogadorP, jogadorPP,tabu);
             return 0; // não moveu
+        }
+    }
+    
+    public int recuperarDefesa(tabuleiro.Tabuleiro tabu, Participantes jogadorP, Participantes jogadorPP)
+    {
+        Scanner scanf = new Scanner(System.in);
+        int resposta;
+        if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
+        {
+            System.out.println("Qual jogador voce deseja curar ?");
+            System.out.print("Digite 1 ou 2: ");
+            resposta = scanf.nextInt();
+            if(resposta == 1)
+            {
+                jogadorP.setDefesa(jogadorP.getDefesa()+2);
+            }
+            else
+            {
+                jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
+            }
+            return 2;
+        }
+        else
+        {
+            jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
+            return 2;
         }
     }
 }

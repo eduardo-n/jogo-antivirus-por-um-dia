@@ -59,14 +59,4 @@ public class SetorNormal extends Setor {
         setorFonte.setCoordenadaY(coordenadaY);
         return setorFonte;
     }
-    
-    public void inicializarSetor(int coordenadaX, int coordenadaY)
-    {
-        /*
-        SetorNormal setor = new SetorNormal();
-        setor.setCoordenadaX(coordenadaX);
-        setor.setCoordenadaY(coordenadaY);
-        */
-        
-    }
 }

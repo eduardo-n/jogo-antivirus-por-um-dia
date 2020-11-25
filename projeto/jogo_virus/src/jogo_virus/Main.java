@@ -12,13 +12,15 @@ import java.util.Iterator;
 import java.util.Scanner;
 import static java.util.Spliterators.iterator;
 import java.util.concurrent.TimeUnit;
+import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+import tabuleiro.Setor;
 
 public class Main {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         // TODO code application logic here
 
         int comando; // comando digitado pelo usuario
@@ -50,67 +52,132 @@ public class Main {
         // Inicializando setorFonte do vírus e setando os dados
         tabuleiro.SetorNormal setorFonte = new tabuleiro.SetorNormal();
         setorFonte = setorFonte.gerarSetorFonte(setorFonte);
-        System.out.println("\n"+setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY());
 
         // Scanner para receber os comandos das jogadas
         Scanner scanf = new Scanner(System.in);  
         int menu = 1;
         int countJogadas = 0;
+        int quantidadeInimigos;
+        int ciclo = 0;
+        Setor setorTemporario = new Setor();
         while(menu != 0)
         { 
-            if(countJogadas %2 == 0)
+            quantidadeInimigos = (setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu).getInimigosDoSetor().size())+
+                    (setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu).getInimigosDoSetor().size());
+            if(countJogadas > 3+quantidadeInimigos)
+            {
+                countJogadas = 0;
+                ciclo++;
+            }
+            //vez do jogador1
+            if(countJogadas <2 && tabu.getPosicaoAtualP1()!=null)
             {
                 jogador = 1;
             }
-            else
+            //vez do jogador2
+            else if(tabu.getPosicaoAtualP2()!=null)
             {
                 jogador = 2;
             }
-            System.out.println("\n\tVez de P"+jogador+"\n");
+            //os 2 jogadores estão mortos
+            else if(tabu.getPosicaoAtualP2()==null && tabu.getPosicaoAtualP1()==null)
+            {
+                System.out.println("Fim do Jogo! - Voces perderam");
+                break;
+            }
+            else if(ciclo>25)
+            {
+                System.out.println("Fim do Jogo! - Voces perderam");
+                break;
+            }
+            //ainda tem um jogador vivo mas não estava na vez dele ainda
+            else
+            {
+                countJogadas++;
+            }
         
-            System.out.println("1 - Mover");
-            System.out.println("2 - Atacar");
-            System.out.println("3 - Procurar");
-            System.out.println("4 - Sair do jogo");
-            System.out.print("\nDigite o numero: ");
-            comando = scanf.nextInt();
-            
-            switch(comando){                
-                case 1:
-                    System.out.println("\n1 - Cima");
-                    System.out.println("2 - Direita");
-                    System.out.println("3 - Baixo");
-                    System.out.println("4 - Esquerda\n");
-                    System.out.print("Digite o numero: ");
-                    comando = scanf.nextInt();
-                    // movendo jogador 1 se possível e somando 1 no countJogadas
-                    if(jogador == 1)
-                    {    
-                        countJogadas = countJogadas + jogSimples.mover(comando, tabu,jogSimples, jogSuporte);
-                    }
-                    else
-                    {
-                        countJogadas = countJogadas + jogSuporte.mover(comando, tabu,jogSimples, jogSuporte);
-                    }
+            //vez de algum jogador
+            if(countJogadas<4)
+            {
+                System.out.println("\n\tVez de P"+jogador+"\n");
+                System.out.println("1 - Mover");
+                System.out.println("2 - Atacar");
+                System.out.println("3 - Procurar");
+                if(countJogadas>1 && countJogadas<4)
+                {
+                    System.out.println("4 - Recuperar Defesa");
+                }
+                System.out.println("9 - Sair do jogo");
+                System.out.print("\nDigite o numero: ");
+                comando = scanf.nextInt();
 
-                    // Verificando se algum dos jogadores chegaram no Setor da Fonte do Vírus
-                    if(tabu.getPosicaoAtualP2().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()) || 
-                        tabu.getPosicaoAtualP1().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()))
-                    {
-                        System.out.println("\nParabéns ! Você conseguiu combater o vírus\n");
-                        menu = 0;
-                    }
-                    
-                    break;
-                case 2:
-                    // ataque
-                case 3:
-                    // procurar
-                case 4:
-                    //sair do while    
-                    menu=0;
-                default:
-                    System.out.println("Digite um comando valido.");
+                switch(comando){                
+                    case 1:
+                        System.out.println("\n1 - Cima");
+                        System.out.println("2 - Direita");
+                        System.out.println("3 - Baixo");
+                        System.out.println("4 - Esquerda\n");
+                        System.out.print("Digite o numero: ");
+                        comando = scanf.nextInt();
+                        // movendo jogador 1 se possível e somando 1 no countJogadas
+                        if(jogador == 1)
+                        {    
+                            countJogadas = countJogadas + jogSimples.mover(comando, tabu,jogSimples, jogSuporte);
+                        }
+                        else
+                        {
+                            countJogadas = countJogadas + jogSuporte.mover(comando, tabu,jogSimples, jogSuporte);
+                        }
+
+                        // Verificando se algum dos jogadores chegaram no Setor da Fonte do Vírus
+                        if(tabu.getPosicaoAtualP2().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()) || 
+                            tabu.getPosicaoAtualP1().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()))
+                        {
+                            System.out.println("\nParabéns ! Você conseguiu combater o vírus\n");
+                            menu = 0;
+                        }
+
+                        break;
+                    case 2:
+                        // ataque
+                    case 3:
+                        // procurar
+                        if(setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu).getClass().getName().equals("tabuleiro.SetorPrivado"))
+                        {
+                            
+                        }
+                        break;
+                    case 4:
+                        // somente o jogador2 consegue executar esta habilidade
+                        if(countJogadas>1 && countJogadas<4)
+                        {
+                            //recuperar Defesa gasta as 2 jogadas
+                            countJogadas = countJogadas + jogSuporte.recuperarDefesa(tabu, jogSimples, jogSuporte);
+                            tabu.modificarTabuleiro(setorTemporario, jogador, jogSimples, jogSuporte, tabu);
+                        }
+                        // jogador e inimigo não podem recuperar defesa
+                        else 
+                        {
+                            //System.out.println(""+countJogadas);
+                            System.out.println("Digite um comando valido.");
+                        }
+                        break;
+                    case 9:
+                        //sair do jogo    
+                        menu=0;
+                        break;
+                    default:
+                        
+                        System.out.println(""+countJogadas);
+                        System.out.println("Digite um comando valido.");
+                        break;
+                }
+            }
+            else
+            {
+                System.out.println("vez do inimigo");
+                //chamar a funcao de ataque inimigo
+                countJogadas++;
             }
         }
     }
