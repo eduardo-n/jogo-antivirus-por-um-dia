@@ -113,7 +113,7 @@ public class Tabuleiro {
         }
     }
     
-    public void modificarTabuleiro(Setor setorAtual, int jogador, Tabuleiro tabu)
+    public void modificarTabuleiro(Setor setorAntigo, int jogador, Tabuleiro tabu)
     {
         System.out.println("\n");
         System.out.println("-----------------------------------------");
@@ -134,7 +134,7 @@ public class Tabuleiro {
                 Setor PesqSetorNovo = (Setor) iterator.next(); 
                 if((PesqSetorNovo.getCoordenadaX()+" "+PesqSetorNovo.getCoordenadaY()).equals(tabu.getPosicaoAtualP1()))
                 {  
-                    setorNovo = setorAtual.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu);
+                    setorNovo = setorAntigo.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu);
                 }  
             }
  
@@ -142,13 +142,13 @@ public class Tabuleiro {
             if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
             {
                 // Limpando o campo de P1 antigo quando ele mudar de posição
-                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
+                matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
             }
             else
             {
                 // Limpando o campo de P1 antigo quando ele mudar de posição
-                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
+                matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
 
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
 
@@ -167,7 +167,7 @@ public class Tabuleiro {
                 Setor PesqSetorNovo = (Setor) iterator.next(); 
                 if((PesqSetorNovo.getCoordenadaX()+" "+PesqSetorNovo.getCoordenadaY()).equals(tabu.getPosicaoAtualP2()))
                 {  
-                    setorNovo = setorAtual.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu);
+                    setorNovo = setorAntigo.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu);
                 }  
             }
 
@@ -179,7 +179,7 @@ public class Tabuleiro {
             else
             {
                 // Limpando o campo de P2 antigo quando ele mudar de posição
-                matrizTabuleiro[setorAtual.getCoordenadaX()][setorAtual.getCoordenadaY()]=" ";
+                matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
 
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
 
@@ -250,6 +250,101 @@ public class Tabuleiro {
             }
             System.out.print("\n");
         }
+        
+        // Imprimindo dados do setor em baixo do tabuleiro
+        int y;
+        int x = (setorNovo.coordenadaX+1)/2;
+        if(setorNovo.coordenadaY == 2)
+        {
+            y = 1;
+        }
+        else if(setorNovo.coordenadaY == 6)
+        {
+            y = 2;
+        }
+        else if(setorNovo.coordenadaY == 10)
+        {
+            y = 3;
+        }
+        else if(setorNovo.coordenadaY == 14)
+        {
+            y = 4;
+        }
+        else
+        {
+            y = 5;
+        }
+
+        char cima,direita,baixo,esquerda;
+        if(setorNovo.isLadoCima())
+        {
+            cima = '*';
+        }
+        else
+        {
+            cima = '-';
+        }
+        if(setorNovo.isLadoDir())
+        {
+            direita = '*';
+        }
+        else
+        {
+            direita = '|';
+        }
+        if(setorNovo.isLadoBaixo())
+        {
+            baixo = '*';
+        }
+        else
+        {
+            baixo = '-';
+        }
+        if(setorNovo.isLadoEsq())
+        {
+            esquerda = '*';
+        }
+        else
+        {
+            esquerda = '|';
+        }
+
+        System.out.println("\n\tSetor ["+x+","+y+"]");
+        System.out.println("|------------"+cima+"------------|");
+        System.out.print("|   ");
+        int i;
+        //setorNovo.getInimigosDoSetor().size()
+        for(i=0;i<5;i++)
+        {
+            System.out.print("2/2 ");
+            //System.out.print(setorNovo.getInimigosDoSetor().get(i).getAtaque()+"/"+setorNovo.getInimigosDoSetor().get(i).getDefesa()+" ");
+        }
+        if(i==0)
+        {
+            System.out.print("                      |");
+        }
+        else if(i==1)
+        {
+            System.out.print("                   |");
+        }
+        else if(i==2)
+        {
+            System.out.print("              |");
+        }
+        else if(i==3)
+        {
+            System.out.print("          |");
+        }
+        else if(i==4)
+        {
+            System.out.print("      |");
+        }
+        else if(i==5)
+        {
+            System.out.print("  |");
+        }
+        
+        
     }
     
     public void inserirSetorVisitado(Setor setor)
@@ -295,3 +390,5 @@ public class Tabuleiro {
 10 |---|---|---|---|---|
 
 */
+
+// x = (linha+1) / 2;      y = 

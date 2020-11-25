@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
+import jogadores.Inimigo;
+import jogadores.Participantes;
 
 public class Setor {
     
@@ -20,6 +22,7 @@ public class Setor {
     boolean ladoBaixo;
     boolean ladoDir;
     boolean ladoCima;
+    public ArrayList<Inimigo> inimigosDoSetor = new ArrayList<Inimigo>();
     
     public Setor(){}
 
@@ -30,7 +33,8 @@ public class Setor {
         this.ladoEsq = ladoEsq;
         this.ladoBaixo = ladoBaixo;
         this.ladoDir = ladoDir;
-        this.ladoCima = ladoCima;  
+        this.ladoCima = ladoCima;
+        
     }
 
     public int getCoordenadaX() {
@@ -80,14 +84,23 @@ public class Setor {
     public void setLadoCima(boolean ladoCima) {
         this.ladoCima = ladoCima;
     }
+
+    public ArrayList<Inimigo> getInimigosDoSetor() {
+        return inimigosDoSetor;
+    }
+
+    public void setInimigosDoSetor(ArrayList<Inimigo> inimigosDoSetor) {
+        this.inimigosDoSetor = inimigosDoSetor;
+    }
+    
+    
     
     public Setor getSetorPorCoordenada(String coordenada, tabuleiro.Tabuleiro tabu)
     {
         Iterator i = tabu.setoresVisitados.iterator();
         while(i.hasNext())
         {
-            Setor setor = (Setor) i.next();
-            
+            Setor setor = (Setor) i.next();            
             if((setor.getCoordenadaX()+" "+setor.getCoordenadaY()).equals(coordenada))
             {
                 return setor;
@@ -100,7 +113,7 @@ public class Setor {
     {
         // Numero aleatorio para decidir o tipo do setor
         Random random = new Random();
-        int numeroRandom = random.nextInt(2);
+        int numeroRandom = random.nextInt(3);
         
         Setor novoSetor;      
         if(numeroRandom == 0)
@@ -115,7 +128,7 @@ public class Setor {
         {
             novoSetor = new SetorPrivado();
         }
-        
+
         // Convertendo e separando a String da nova Coordenada
         StringTokenizer coordenada = new StringTokenizer(posicaoNova);
         Integer x = Integer.parseInt((String)coordenada.nextElement());
@@ -134,7 +147,7 @@ public class Setor {
         while(i.hasNext())
         {
             String coordenadaLista = (String) i.next();
-            if(coordenadaLista.equals((x-1)+""+y))
+            if(coordenadaLista.equals((x-1)+" "+y))
             {
                 naoPodeMudarLado = 1;
             }            
@@ -156,7 +169,7 @@ public class Setor {
         }
         if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
         {
-            numeroRandom = random.nextInt(9);
+            numeroRandom = random.nextInt(10);
             if(numeroRandom <= 2)
             {
                 novoSetor.setLadoCima(false);
@@ -175,7 +188,7 @@ public class Setor {
         while(i.hasNext())
         {
             String coordenadaLista = (String) i.next();
-            if(coordenadaLista.equals((x+""+(y+1))))
+            if(coordenadaLista.equals((x+" "+(y+2))))
             {
                 naoPodeMudarLado = 1;
             }            
@@ -197,7 +210,7 @@ public class Setor {
         }
         if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
         {
-            numeroRandom = random.nextInt(9);
+            numeroRandom = random.nextInt(10);
             if(numeroRandom <= 2)
             {
                 novoSetor.setLadoDir(false);
@@ -216,7 +229,7 @@ public class Setor {
         while(i.hasNext())
         {
             String coordenadaLista = (String) i.next();
-            if(coordenadaLista.equals(((x+1)+""+y)))
+            if(coordenadaLista.equals(((x+1)+" "+y)))
             {
                 naoPodeMudarLado = 1;
                 //System.out.print(naoPodeMudarLado+" Teste");
@@ -239,7 +252,7 @@ public class Setor {
         }
         if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
         {
-            numeroRandom = random.nextInt(9);
+            numeroRandom = random.nextInt(10);
             if(numeroRandom <= 2)
             {
                 novoSetor.setLadoBaixo(false);
@@ -258,7 +271,7 @@ public class Setor {
         while(i.hasNext())
         {
             String coordenadaLista = (String) i.next();
-            if(coordenadaLista.equals((x+""+(y-2))))
+            if(coordenadaLista.equals((x+" "+(y-2))))
             {
                 naoPodeMudarLado = 1;
             }            
@@ -280,7 +293,7 @@ public class Setor {
         }
         if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
         {
-            numeroRandom = random.nextInt(9);
+            numeroRandom = random.nextInt(10);
             if(numeroRandom <= 2)
             {
                 novoSetor.setLadoEsq(false);
@@ -292,6 +305,17 @@ public class Setor {
         }
         // Fim BLOCO - Esquerda
 
+        // Gerando e armazenando os inimigos do Setor
+        numeroRandom = random.nextInt((5 - 1)+1) + 1;
+        int numeroRandomAtkDef;
+        for(int j=0; j<numeroRandom; j++)
+        {
+            numeroRandomAtkDef = random.nextInt((3 - 1)+1) + 1;
+            Inimigo inimigo = new Inimigo(numeroRandomAtkDef,numeroRandomAtkDef);
+            // Adicionando inimigo na lista do Setor
+            novoSetor.inimigosDoSetor.add(inimigo);
+        }
+        
         // Adicionando o novo setor na lista
         tabu.setoresVisitados.add(novoSetor);
     }
@@ -302,11 +326,11 @@ public class Setor {
 0  |---|---|---|---|---|
 1  |   |   |   |   |   |
 2  |---|---|---|---|---|
-3  |   |   |   | P |   |
-4  |---|---|-*-|-*-|-*-|
-5  |   |   * C *   *   |
-6  |---|---|-*-|---|-*-|
-7  |   |   |   |   |   |
+3  |   |   |   |   |   |
+4  |---|---|-*-|---|---|
+5  |   |   *   *   |   |
+6  |---|---|-*-|-*-|---|
+7  |   |   |   | 1 |   |
 8  |---|---|---|---|---|
 9  |   |   |   |   |   |
 10 |---|---|---|---|---|

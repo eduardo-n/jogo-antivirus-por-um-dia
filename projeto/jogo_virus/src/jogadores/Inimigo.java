@@ -8,6 +8,8 @@ package jogadores;
 
 public class Inimigo extends Participantes {
     
+    public Inimigo(){}
+    
     public Inimigo(int ataque, int defesa)
     {
         super(ataque, defesa);

@@ -48,6 +48,7 @@ public class Main {
         // Inicializando setorFonte do vírus e setando os dados
         tabuleiro.SetorNormal setorFonte = new tabuleiro.SetorNormal();
         setorFonte = setorFonte.gerarSetorFonte(setorFonte);
+        System.out.println("\n"+setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY());
 
         // Scanner para receber os comandos das jogadas
         Scanner scanf = new Scanner(System.in);  
@@ -63,8 +64,7 @@ public class Main {
             System.out.print("\nDigite o numero: ");
             comando = scanf.nextInt();
             
-            switch(comando){
-                
+            switch(comando){                
                 case 1:
                     System.out.println("\n1 - Cima");
                     System.out.println("2 - Direita");
@@ -74,6 +74,15 @@ public class Main {
                     comando = scanf.nextInt();
                     // movendo jogador 1 se possível
                     jogSimples.mover(comando, tabu);
+                    
+                    // Verificando se algum dos jogadores chegaram no Setor da Fonte do Vírus
+                    if(tabu.getPosicaoAtualP2().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()) || 
+                        tabu.getPosicaoAtualP1().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()))
+                    {
+                        System.out.println("\nParabéns ! Você conseguiu combater o vírus\n");
+                        menu = 0;
+                    }
+                    
                     break;
                 case 2:
                     // ataque
