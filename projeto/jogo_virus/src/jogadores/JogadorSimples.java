@@ -33,7 +33,7 @@ public class JogadorSimples extends Participantes {
         this.defesa = defesa;
     }
     
-    public void mover(int comando, tabuleiro.Tabuleiro tabu)
+    public int mover(int comando, tabuleiro.Tabuleiro tabu, Participantes jogadorP, Participantes jogadorPP)
     {
         String posicaoAntigaJogador;        
         posicaoAntigaJogador = tabu.getPosicaoAtualP1();
@@ -72,7 +72,8 @@ public class JogadorSimples extends Participantes {
                 setorInit.initSetor(tabu.getPosicaoAtualP1(), tabu, comando);
             }
  
-            tabu.modificarTabuleiro(setorAntigo, 1, tabu);
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 1; // moveu
         }
         // mover para direita se existir porta
         else if(comando == 2 && setorAntigo.isLadoDir())
@@ -89,7 +90,8 @@ public class JogadorSimples extends Participantes {
                 setorInit.initSetor(tabu.getPosicaoAtualP1(), tabu, comando);
             }
             
-            tabu.modificarTabuleiro(setorAntigo, 1, tabu);
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 1; // moveu
         }
         // mover para baixo se existir porta
         else if(comando == 3 && setorAntigo.isLadoBaixo())
@@ -106,7 +108,8 @@ public class JogadorSimples extends Participantes {
                 setorInit.initSetor(tabu.getPosicaoAtualP1(), tabu, comando);
             }
             
-            tabu.modificarTabuleiro(setorAntigo, 1, tabu);
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 1; // moveu
         }
         // mover para esquerda se existir porta
         else if(comando == 4 && setorAntigo.isLadoEsq())
@@ -123,12 +126,20 @@ public class JogadorSimples extends Participantes {
                 setorInit.initSetor(tabu.getPosicaoAtualP1(), tabu, comando);
             }
             
-            tabu.modificarTabuleiro(setorAntigo, 1, tabu);
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 1; // moveu
+        }
+        else if(comando != 1 && comando != 2 && comando != 3 && comando != 4 )
+        {
+            System.out.print("\n• Comando invalido.");            
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 0; // não moveu
         }
         else
         {
-            System.out.print("\n• Comando invalido.");
-            tabu.modificarTabuleiro(setorAntigo, 1, tabu);
+            System.out.print("\n• Voce nao pode se movimentar atraves de paredes, tente outra direcao.");            
+            tabu.modificarTabuleiro(setorAntigo, 1, jogadorP, jogadorPP,tabu);
+            return 0; // não moveu
         }
     }
 }

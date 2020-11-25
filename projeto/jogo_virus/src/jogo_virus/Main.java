@@ -5,18 +5,20 @@
  */
 package jogo_virus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
 import static java.util.Spliterators.iterator;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // TODO code application logic here
 
         int comando; // comando digitado pelo usuario
@@ -43,7 +45,7 @@ public class Main {
 
         // Inicializando os Jogadores
         jogadores.JogadorSimples jogSimples = new jogadores.JogadorSimples(2,6);
-        jogadores.JogadorSimples jogSuporte = new jogadores.JogadorSimples(1,7);
+        jogadores.JogadorSuporte jogSuporte = new jogadores.JogadorSuporte(1,7);
 
         // Inicializando setorFonte do vírus e setando os dados
         tabuleiro.SetorNormal setorFonte = new tabuleiro.SetorNormal();
@@ -53,8 +55,17 @@ public class Main {
         // Scanner para receber os comandos das jogadas
         Scanner scanf = new Scanner(System.in);  
         int menu = 1;
+        int countJogadas = 0;
         while(menu != 0)
-        {
+        { 
+            if(countJogadas %2 == 0)
+            {
+                jogador = 1;
+            }
+            else
+            {
+                jogador = 2;
+            }
             System.out.println("\n\tVez de P"+jogador+"\n");
         
             System.out.println("1 - Mover");
@@ -72,9 +83,16 @@ public class Main {
                     System.out.println("4 - Esquerda\n");
                     System.out.print("Digite o numero: ");
                     comando = scanf.nextInt();
-                    // movendo jogador 1 se possível
-                    jogSimples.mover(comando, tabu);
-                    
+                    // movendo jogador 1 se possível e somando 1 no countJogadas
+                    if(jogador == 1)
+                    {    
+                        countJogadas = countJogadas + jogSimples.mover(comando, tabu,jogSimples, jogSuporte);
+                    }
+                    else
+                    {
+                        countJogadas = countJogadas + jogSuporte.mover(comando, tabu,jogSimples, jogSuporte);
+                    }
+
                     // Verificando se algum dos jogadores chegaram no Setor da Fonte do Vírus
                     if(tabu.getPosicaoAtualP2().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()) || 
                         tabu.getPosicaoAtualP1().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()))

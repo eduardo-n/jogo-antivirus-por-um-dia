@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import jogadores.Participantes;
 
 public class Tabuleiro {
     
@@ -113,7 +114,7 @@ public class Tabuleiro {
         }
     }
     
-    public void modificarTabuleiro(Setor setorAntigo, int jogador, Tabuleiro tabu)
+    public void modificarTabuleiro(Setor setorAntigo, int jogador, Participantes jogadorP, Participantes jogadorPP, Tabuleiro tabu)
     {
         System.out.println("\n");
         System.out.println("-----------------------------------------");
@@ -128,7 +129,7 @@ public class Tabuleiro {
         iterator = tabu.setoresVisitados.iterator();
        
         if(jogador == 1)
-        {
+        {     
             while(iterator.hasNext())
             {
                 Setor PesqSetorNovo = (Setor) iterator.next(); 
@@ -174,6 +175,8 @@ public class Tabuleiro {
             // Renomear o setor onde o P1 está posicionado
             if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
             {
+                // Limpando o campo de P2 antigo quando ele mudar de posição
+                matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
             }
             else
@@ -251,100 +254,158 @@ public class Tabuleiro {
             System.out.print("\n");
         }
         
-        // Imprimindo dados do setor em baixo do tabuleiro
-        int y;
-        int x = (setorNovo.coordenadaX+1)/2;
-        if(setorNovo.coordenadaY == 2)
+        // Imprimindo dados do(s) setor(es) em baixo do tabuleiro
+        for(int u=0;u<2;u++)
         {
-            y = 1;
-        }
-        else if(setorNovo.coordenadaY == 6)
-        {
-            y = 2;
-        }
-        else if(setorNovo.coordenadaY == 10)
-        {
-            y = 3;
-        }
-        else if(setorNovo.coordenadaY == 14)
-        {
-            y = 4;
-        }
-        else
-        {
-            y = 5;
-        }
+            Setor setorTemporario = new Setor();
+            int podeImprimir = 0;
+            
+            if(u==0) // P1
+            {
+                if(tabu.getPosicaoAtualP1() == null)
+                {
+                    // Passando a vez para o P2
+                    u++;
+                }
+                else
+                {
+                    setorTemporario = setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu);
+                    podeImprimir = 1;
+                }
+            }
+            if(u==1) // P2
+            {
+                if(tabu.getPosicaoAtualP2() == null)
+                {
+                    // P2 está morto
+                }
+                else
+                {
+                    setorTemporario = setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu);
+                    podeImprimir = 1;
+                }
+            }
+            
+            if(podeImprimir == 1)
+            {
+                int y;
+                int x = (setorTemporario.coordenadaX+1)/2;
+                if(setorTemporario.coordenadaY == 2)
+                {
+                    y = 1;
+                }
+                else if(setorTemporario.coordenadaY == 6)
+                {
+                    y = 2;
+                }
+                else if(setorTemporario.coordenadaY == 10)
+                {
+                    y = 3;
+                }
+                else if(setorTemporario.coordenadaY == 14)
+                {
+                    y = 4;
+                }
+                else
+                {
+                    y = 5;
+                }
 
-        char cima,direita,baixo,esquerda;
-        if(setorNovo.isLadoCima())
-        {
-            cima = '*';
-        }
-        else
-        {
-            cima = '-';
-        }
-        if(setorNovo.isLadoDir())
-        {
-            direita = '*';
-        }
-        else
-        {
-            direita = '|';
-        }
-        if(setorNovo.isLadoBaixo())
-        {
-            baixo = '*';
-        }
-        else
-        {
-            baixo = '-';
-        }
-        if(setorNovo.isLadoEsq())
-        {
-            esquerda = '*';
-        }
-        else
-        {
-            esquerda = '|';
-        }
+                char cima,direita,baixo,esquerda;
+                if(setorTemporario.isLadoCima())
+                {
+                    cima = '*';
+                }
+                else
+                {
+                    cima = '-';
+                }
+                if(setorTemporario.isLadoDir())
+                {
+                    direita = '*';
+                }
+                else
+                {
+                    direita = '|';
+                }
+                if(setorTemporario.isLadoBaixo())
+                {
+                    baixo = '*';
+                }
+                else
+                {
+                    baixo = '-';
+                }
+                if(setorTemporario.isLadoEsq())
+                {
+                    esquerda = '*';
+                }
+                else
+                {
+                    esquerda = '|';
+                }
 
-        System.out.println("\n\tSetor ["+x+","+y+"]");
-        System.out.println("|------------"+cima+"------------|");
-        System.out.print("|   ");
-        int i;
-        //setorNovo.getInimigosDoSetor().size()
-        for(i=0;i<5;i++)
-        {
-            System.out.print("2/2 ");
-            //System.out.print(setorNovo.getInimigosDoSetor().get(i).getAtaque()+"/"+setorNovo.getInimigosDoSetor().get(i).getDefesa()+" ");
+                System.out.println("\n\tSetor ["+x+","+y+"]");
+                System.out.println("|------------"+cima+"------------|");
+                System.out.print("|   ");
+
+                for(int i=0;i<setorTemporario.getInimigosDoSetor().size();i++)
+                {
+                    System.out.print(setorTemporario.getInimigosDoSetor().get(i).getAtaque()+"/"+setorTemporario.getInimigosDoSetor().get(i).getDefesa()+" ");
+                }
+                if(setorTemporario.getInimigosDoSetor().size() == 0)
+                {
+                    System.out.println("   Sem inimigos !     |");
+                }
+                else if(setorTemporario.getInimigosDoSetor().size() == 1)
+                {
+                    System.out.println("                    |");
+                }
+                else if(setorTemporario.getInimigosDoSetor().size() == 2)
+                {
+                    System.out.println("              |");
+                }
+                else if(setorTemporario.getInimigosDoSetor().size() == 3)
+                {
+                    System.out.println("          |");
+                }
+                else if(setorTemporario.getInimigosDoSetor().size() == 4)
+                {
+                    System.out.println("      |");
+                }
+                else if(setorTemporario.getInimigosDoSetor().size() == 5)
+                {
+                    System.out.println("  |");
+                }
+
+                System.out.println("|                         |");
+                System.out.println(""+esquerda+"                         "+direita);
+                System.out.print("|   ");
+                
+                if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
+                {
+                    System.out.println("\tP1     P2         |");
+                    System.out.println("|\t"+jogadorP.getAtaque()+"/"+jogadorP.getDefesa()+"    "+jogadorPP.getAtaque()+"/"+jogadorPP.getDefesa()+"        |");
+                    System.out.println("|------------"+baixo+"------------|");
+                    break;
+                }
+                else
+                {
+                    if(u==0)
+                    {
+                        System.out.println("\tP1                |");
+                        System.out.println("|\t"+jogadorP.getAtaque()+"/"+jogadorP.getDefesa()+"               |");
+                        System.out.println("|------------"+baixo+"------------|");
+                    }
+                    else if(u==1)
+                    {
+                        System.out.println("\tP2                |");
+                        System.out.println("|\t"+jogadorPP.getAtaque()+"/"+jogadorPP.getDefesa()+"               |");
+                        System.out.println("|------------"+baixo+"------------|");
+                    }
+                }
+            }
         }
-        if(i==0)
-        {
-            System.out.print("                      |");
-        }
-        else if(i==1)
-        {
-            System.out.print("                   |");
-        }
-        else if(i==2)
-        {
-            System.out.print("              |");
-        }
-        else if(i==3)
-        {
-            System.out.print("          |");
-        }
-        else if(i==4)
-        {
-            System.out.print("      |");
-        }
-        else if(i==5)
-        {
-            System.out.print("  |");
-        }
-        
-        
     }
     
     public void inserirSetorVisitado(Setor setor)
