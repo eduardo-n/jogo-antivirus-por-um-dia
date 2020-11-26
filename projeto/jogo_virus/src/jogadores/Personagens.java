@@ -6,14 +6,14 @@ package jogadores;
  * and open the template in the editor.
  */
 
-public class Participantes {
+public class Personagens {
     
     protected int ataque;
     protected int defesa;
     
-    public Participantes(){}
+    public Personagens(){}
     
-    public Participantes(int ataque, int defesa)
+    public Personagens(int ataque, int defesa)
     {
         this.ataque = ataque;
         this.defesa = defesa;  
@@ -34,6 +34,8 @@ public class Participantes {
     public void setDefesa(int defesa) {
         this.defesa = defesa;
     }
-    
-    
+    public void atacar()
+    {
+        
+    }    
 }

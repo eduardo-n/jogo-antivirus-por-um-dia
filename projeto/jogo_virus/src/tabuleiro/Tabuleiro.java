@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.StringTokenizer;
-import jogadores.Participantes;
+import jogadores.Personagens;
 
 public class Tabuleiro {
     
@@ -114,7 +114,7 @@ public class Tabuleiro {
         }
     }
     
-    public void modificarTabuleiro(Setor setorAntigo, int jogador, Participantes jogadorP, Participantes jogadorPP, Tabuleiro tabu)
+    public void modificarTabuleiro(Setor setorAntigo, int jogador, Personagens jogadorP, Personagens jogadorPP, Tabuleiro tabu)
     {
         System.out.println("\n");
         System.out.println("-----------------------------------------");
@@ -124,7 +124,7 @@ public class Tabuleiro {
         int e = 0;
         
         Iterator iterator;
-        Setor setorNovo = new Setor();
+        Setor setorNovo = new SetorNormal();
         // Pegando o setor novo do jogador
         iterator = tabu.setoresVisitados.iterator();
        
@@ -257,7 +257,7 @@ public class Tabuleiro {
         // Imprimindo dados do(s) setor(es) em baixo do tabuleiro
         for(int u=0;u<2;u++)
         {
-            Setor setorTemporario = new Setor();
+            Setor setorTemporario = new SetorNormal();
             int podeImprimir = 0;
             
             if(u==0) // P1
@@ -359,7 +359,7 @@ public class Tabuleiro {
                 }
                 else if(setorTemporario.getInimigosDoSetor().size() == 1)
                 {
-                    System.out.println("                    |");
+                    System.out.println("                  |");
                 }
                 else if(setorTemporario.getInimigosDoSetor().size() == 2)
                 {
@@ -451,5 +451,3 @@ public class Tabuleiro {
 10 |---|---|---|---|---|
 
 */
-
-// x = (linha+1) / 2;      y = 

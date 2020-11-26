@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 import jogadores.Inimigo;
-import jogadores.Participantes;
+import jogadores.Personagens;
 
-public class Setor {
+public abstract class Setor {
     
     int coordenadaX;
     int coordenadaY;
@@ -109,26 +109,12 @@ public class Setor {
         return null;
     }
     
-    public void initSetor(String posicaoNova, tabuleiro.Tabuleiro tabu, int comando)
+    public void initSetor(String posicaoNova, tabuleiro.Tabuleiro tabu, int comando, Setor novoSetor)
     {
         // Numero aleatorio para decidir o tipo do setor
         Random random = new Random();
         int numeroRandom = random.nextInt(3);
         
-        Setor novoSetor;      
-        if(numeroRandom == 0)
-        {
-            novoSetor = new SetorNormal();
-        }
-        else if(numeroRandom == 1)
-        {
-            novoSetor = new SetorOculto();
-        }
-        else
-        {
-            novoSetor = new SetorPrivado();
-        }
-
         // Convertendo e separando a String da nova Coordenada
         StringTokenizer coordenada = new StringTokenizer(posicaoNova);
         Integer x = Integer.parseInt((String)coordenada.nextElement());
@@ -291,6 +277,7 @@ public class Setor {
                 }            
             }
         }
+        
         if(naoPodeMudarLado == 0) // Se puder mudar o lado, sera sorteado porta ou parede
         {
             numeroRandom = random.nextInt(10);

@@ -59,7 +59,7 @@ public class Main {
         int countJogadas = 0;
         int quantidadeInimigos;
         int ciclo = 0;
-        Setor setorTemporario = new Setor();
+        Setor setorTemporario = new tabuleiro.SetorNormal();
         while(menu != 0)
         { 
             quantidadeInimigos = (setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu).getInimigosDoSetor().size())+
@@ -82,12 +82,12 @@ public class Main {
             //os 2 jogadores estão mortos
             else if(tabu.getPosicaoAtualP2()==null && tabu.getPosicaoAtualP1()==null)
             {
-                System.out.println("Fim do Jogo! - Voces perderam");
+                System.out.println("• Fim do Jogo! - Voces perderam");
                 break;
             }
             else if(ciclo>25)
             {
-                System.out.println("Fim do Jogo! - Voces perderam");
+                System.out.println("• Fim do Jogo! - Voces perderam");
                 break;
             }
             //ainda tem um jogador vivo mas não estava na vez dele ainda
@@ -133,7 +133,7 @@ public class Main {
                         if(tabu.getPosicaoAtualP2().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()) || 
                             tabu.getPosicaoAtualP1().equals(setorFonte.getCoordenadaX()+" "+setorFonte.getCoordenadaY()))
                         {
-                            System.out.println("\nParabéns ! Você conseguiu combater o vírus\n");
+                            System.out.println("\n• Parabéns ! Você conseguiu combater o vírus\n");
                             menu = 0;
                         }
 
@@ -144,7 +144,19 @@ public class Main {
                         // procurar
                         if(setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu).getClass().getName().equals("tabuleiro.SetorPrivado"))
                         {
-                            
+                            System.out.println("• Este setor eh privado - nao pode executar a acao de procurar");
+                            tabu.modificarTabuleiro(setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu), 1, jogSimples, jogSuporte, tabu);
+                        }
+                        else
+                        {
+                            if(countJogadas<2)
+                            {
+                                countJogadas = countJogadas + jogSimples.procurar(jogSimples,jogSuporte, setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu), tabu);
+                            }
+                            else
+                            {
+                                countJogadas = countJogadas + jogSuporte.procurar(jogSimples,jogSuporte, setorTemporario.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu), tabu);
+                            }
                         }
                         break;
                     case 4:
@@ -159,7 +171,7 @@ public class Main {
                         else 
                         {
                             //System.out.println(""+countJogadas);
-                            System.out.println("Digite um comando valido.");
+                            System.out.println("• Digite um comando valido.");
                         }
                         break;
                     case 9:
@@ -169,7 +181,7 @@ public class Main {
                     default:
                         
                         System.out.println(""+countJogadas);
-                        System.out.println("Digite um comando valido.");
+                        System.out.println("• Digite um comando valido.");
                         break;
                 }
             }

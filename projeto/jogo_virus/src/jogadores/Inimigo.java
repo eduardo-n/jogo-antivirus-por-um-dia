@@ -6,7 +6,7 @@
 package jogadores;
 
 
-public class Inimigo extends Participantes {
+public class Inimigo extends Personagens {
     
     public Inimigo(){}
     

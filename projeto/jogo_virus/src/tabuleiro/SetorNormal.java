@@ -59,4 +59,15 @@ public class SetorNormal extends Setor {
         setorFonte.setCoordenadaY(coordenadaY);
         return setorFonte;
     }
+
+    @Override
+    public Setor getSetorPorCoordenada(String coordenada, Tabuleiro tabu) {
+        return super.getSetorPorCoordenada(coordenada, tabu); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void initSetor(String posicaoNova, Tabuleiro tabu, int comando, Setor novoSetor) {
+        super.initSetor(posicaoNova, tabu, comando, novoSetor); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
