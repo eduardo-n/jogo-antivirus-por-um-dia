@@ -116,7 +116,7 @@ public class Tabuleiro {
     
     public void modificarTabuleiro(Setor setorAntigo, int jogador, Personagens jogadorP, Personagens jogadorPP, Tabuleiro tabu)
     {
-        System.out.println("\n");
+        
         System.out.println("-----------------------------------------");
         System.out.println("|         Antivírus por um dia          |");
         System.out.println("-----------------------------------------\n");
@@ -136,15 +136,16 @@ public class Tabuleiro {
                 if((PesqSetorNovo.getCoordenadaX()+" "+PesqSetorNovo.getCoordenadaY()).equals(tabu.getPosicaoAtualP1()))
                 {  
                     setorNovo = setorAntigo.getSetorPorCoordenada(tabu.getPosicaoAtualP1(), tabu);
-                }  
+                }    
             }
- 
             // Renomear o setor onde o P2 está posicionado
             if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
             {
+
                 // Limpando o campo de P1 antigo quando ele mudar de posição
                 matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]="P";
+
             }
             else
             {
@@ -152,13 +153,17 @@ public class Tabuleiro {
                 matrizTabuleiro[setorAntigo.getCoordenadaX()][setorAntigo.getCoordenadaY()]=" ";
 
                 matrizTabuleiro[setorNovo.coordenadaX][setorNovo.coordenadaY]=""+jogador;
+                
+                if(!tabu.getPosicaoAtualP2().equals(""))
+                {
+                    // Convertendo e separando a String da Coordenada do jogador que não moveu
+                    StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP2());
+                    Integer x = Integer.parseInt((String)coordenada.nextElement());
+                    Integer y = Integer.parseInt((String)coordenada.nextElement());
 
-                // Convertendo e separando a String da Coordenada do jogador que não moveu
-                StringTokenizer coordenada = new StringTokenizer(tabu.getPosicaoAtualP2());
-                Integer x = Integer.parseInt((String)coordenada.nextElement());
-                Integer y = Integer.parseInt((String)coordenada.nextElement());
-
-                matrizTabuleiro[x][y]=""+(jogador+1);
+                    matrizTabuleiro[x][y]=""+(jogador+1);
+                }
+                
             }
         }
         else if(jogador == 2)
@@ -171,7 +176,7 @@ public class Tabuleiro {
                     setorNovo = setorAntigo.getSetorPorCoordenada(tabu.getPosicaoAtualP2(), tabu);
                 }  
             }
-
+            
             // Renomear o setor onde o P1 está posicionado
             if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
             {
@@ -197,6 +202,7 @@ public class Tabuleiro {
         
         if(setorNovo.isLadoCima())
         {
+            
             matrizTabuleiro[setorNovo.coordenadaX-1][setorNovo.coordenadaY]="*";
         }
         else
@@ -262,7 +268,7 @@ public class Tabuleiro {
             
             if(u==0) // P1
             {
-                if(tabu.getPosicaoAtualP1() == null)
+                if(tabu.getPosicaoAtualP1().equals(""))
                 {
                     // Passando a vez para o P2
                     u++;
@@ -275,7 +281,7 @@ public class Tabuleiro {
             }
             if(u==1) // P2
             {
-                if(tabu.getPosicaoAtualP2() == null)
+                if(tabu.getPosicaoAtualP2().equals(""))
                 {
                     // P2 está morto
                 }
@@ -381,7 +387,7 @@ public class Tabuleiro {
                 System.out.println("|                         |");
                 System.out.println(""+esquerda+"                         "+direita);
                 System.out.print("|   ");
-                
+
                 if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
                 {
                     System.out.println("\tP1     P2         |");

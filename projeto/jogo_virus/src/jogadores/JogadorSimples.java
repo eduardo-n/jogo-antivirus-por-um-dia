@@ -7,6 +7,7 @@ import tabuleiro.Setor;
 import tabuleiro.SetorNormal;
 import tabuleiro.SetorOculto;
 import tabuleiro.SetorPrivado;
+import tabuleiro.Tabuleiro;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -158,6 +159,11 @@ public class JogadorSimples extends Personagens {
         }
     }
     
+    @Override
+    public int atacar(int jogador, Personagens jogadorP, Personagens jogadorPP, Tabuleiro tabu) {
+        return super.atacar(jogador, jogadorP, jogadorPP, tabu); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     public int procurar(Personagens jogadorP, Personagens jogadorPP, Setor setor, tabuleiro.Tabuleiro tabu)
     {
         Random random = new Random();
@@ -200,11 +206,7 @@ public class JogadorSimples extends Personagens {
         tabu.modificarTabuleiro(setor, 1, jogadorP, jogadorPP, tabu);
         return 1;
     }
-    
-    public void atacar()
-    {
-        
-    }
+   
 }
 /*
    012345678901234567890

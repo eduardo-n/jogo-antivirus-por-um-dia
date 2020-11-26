@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 import jogadores.Inimigo;
 import jogadores.Personagens;
 
-public abstract class Setor {
+public class Setor {
     
     int coordenadaX;
     int coordenadaY;
@@ -92,9 +92,7 @@ public abstract class Setor {
     public void setInimigosDoSetor(ArrayList<Inimigo> inimigosDoSetor) {
         this.inimigosDoSetor = inimigosDoSetor;
     }
-    
-    
-    
+
     public Setor getSetorPorCoordenada(String coordenada, tabuleiro.Tabuleiro tabu)
     {
         Iterator i = tabu.setoresVisitados.iterator();

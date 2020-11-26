@@ -8,6 +8,7 @@ import tabuleiro.Setor;
 import tabuleiro.SetorNormal;
 import tabuleiro.SetorOculto;
 import tabuleiro.SetorPrivado;
+import tabuleiro.Tabuleiro;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -160,30 +161,9 @@ public class JogadorSuporte extends Personagens {
         }
     }
     
-    public int recuperarDefesa(tabuleiro.Tabuleiro tabu, Personagens jogadorP, Personagens jogadorPP)
-    {
-        Scanner scanf = new Scanner(System.in);
-        int resposta;
-        if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
-        {
-            System.out.println("Qual jogador voce deseja curar ?");
-            System.out.print("Digite 1 ou 2: ");
-            resposta = scanf.nextInt();
-            if(resposta == 1)
-            {
-                jogadorP.setDefesa(jogadorP.getDefesa()+2);
-            }
-            else
-            {
-                jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
-            }
-            return 1;
-        }
-        else
-        {
-            jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
-            return 1;
-        }
+    @Override
+    public int atacar(int jogador, Personagens jogadorP, Personagens jogadorPP, Tabuleiro tabu) {
+        return super.atacar(jogador, jogadorP, jogadorPP, tabu); //To change body of generated methods, choose Tools | Templates.
     }
     
     public int procurar(Personagens jogadorP, Personagens jogadorPP, Setor setor, tabuleiro.Tabuleiro tabu)
@@ -212,11 +192,18 @@ public class JogadorSuporte extends Personagens {
             {
                 setor.getInimigosDoSetor().get(i).setDefesa( setor.getInimigosDoSetor().get(i).getDefesa()-1);
             }
-            if(setor.getInimigosDoSetor().size()!=0)       
+            if(setor.getInimigosDoSetor().size()!= 0)       
             {
                 System.out.println("• Todos os inimigos neste setor perderam -1 ponto de defesa");
             }
-            for(int i=0;i<setor.getInimigosDoSetor().size();i++)
+            else
+            {
+                System.out.println("• Esse setor nao possui nenhum inimigo para perder pontos, porem sua jogada foi contabilizada");
+            }
+            
+            int quantInimigos = setor.getInimigosDoSetor().size();
+            
+            for(int i=0;i<quantInimigos;i++)
             {
                 if(setor.getInimigosDoSetor().get(i).getDefesa()==0)
                 {
@@ -229,8 +216,30 @@ public class JogadorSuporte extends Personagens {
         tabu.modificarTabuleiro(setor, 2, jogadorP, jogadorPP, tabu);
         return 1;
     }
-    public void atacar()
+    
+    public int recuperarDefesa(tabuleiro.Tabuleiro tabu, Personagens jogadorP, Personagens jogadorPP)
     {
-        
+        Scanner scanf = new Scanner(System.in);
+        int resposta;
+        if(tabu.getPosicaoAtualP1().equals(tabu.getPosicaoAtualP2()))
+        {
+            System.out.println("Qual jogador voce deseja curar ?");
+            System.out.print("Digite 1 ou 2: ");
+            resposta = scanf.nextInt();
+            if(resposta == 1)
+            {
+                jogadorP.setDefesa(jogadorP.getDefesa()+2);
+            }
+            else
+            {
+                jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
+            }
+            return 1;
+        }
+        else
+        {
+            jogadorPP.setDefesa(jogadorPP.getDefesa()+2);
+            return 1;
+        }
     }
 }

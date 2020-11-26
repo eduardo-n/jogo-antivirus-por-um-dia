@@ -19,7 +19,7 @@ public class SetorNormal extends Setor {
     }
     
     // Função para gerar as coordenadas da fonte do Vírus na matriz
-    public SetorNormal gerarSetorFonte(SetorNormal setorFonte)
+    public SetorNormal gerarSetorFonte(SetorNormal setorFonte, Tabuleiro tabu)
     {
         // Adicionando os números que podem ser sorteados para coordenada X
         List<Integer> numerosLinha = new ArrayList<Integer>();
@@ -57,6 +57,13 @@ public class SetorNormal extends Setor {
         //Setando os valores no Setor Fonte
         setorFonte.setCoordenadaX(coordenadaX);
         setorFonte.setCoordenadaY(coordenadaY);
+        setorFonte.setLadoCima(true);
+        setorFonte.setLadoDir(true);
+        setorFonte.setLadoBaixo(true);
+        setorFonte.setLadoEsq(true); 
+        
+        tabu.setoresVisitados.add(setorFonte);
+        
         return setorFonte;
     }
 
