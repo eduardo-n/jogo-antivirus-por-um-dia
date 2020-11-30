@@ -7,8 +7,10 @@ package tabuleiro;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 import jogadores.Personagens;
 
@@ -16,8 +18,8 @@ public class Tabuleiro {
     
     private String posicaoAtualP1;
     private String posicaoAtualP2;
-    public ArrayList<String> ladosBloqueados = new ArrayList<String>();
-    public ArrayList<Setor> setoresVisitados = new ArrayList<Setor>();
+    public Collection<String> ladosBloqueados = new LinkedList<String>();
+    public Collection<Setor> setoresVisitados = new LinkedList<Setor>();
     
     private String [][] matrizTabuleiro = new String [11][21];
     
@@ -35,8 +37,8 @@ public class Tabuleiro {
         return posicaoAtualP2;
     }
 
-    public ArrayList<String> getLadosBloqueados() {
-        return ladosBloqueados;
+    public LinkedList<String> getLadosBloqueados() {
+        return (LinkedList<String>) ladosBloqueados;
     }
 
     public void setLadosBloqueados(ArrayList<String> ladosBloqueados) {
@@ -55,8 +57,8 @@ public class Tabuleiro {
         this.matrizTabuleiro = matrizTabuleiro;
     }
 
-    public ArrayList<Setor> getSetoresVisitados() {
-        return setoresVisitados;
+    public LinkedList<Setor> getSetoresVisitados() {
+        return (LinkedList<Setor>) setoresVisitados;
     }
 
     public void setSetoresVisitados(ArrayList<Setor> setoresVisitados) {

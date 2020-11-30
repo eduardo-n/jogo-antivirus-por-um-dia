@@ -194,7 +194,14 @@ public class JogadorSimples extends Personagens {
             {
                 System.out.println("• Todos os inimigos neste setor perderam -1 ponto de defesa");
             }
-            for(int i=0;i<setor.getInimigosDoSetor().size();i++)
+            else
+            {
+                System.out.println("• Esse setor nao possui nenhum inimigo para perder pontos, porem sua jogada foi contabilizada");
+            }
+            
+            int quantInimigos = setor.getInimigosDoSetor().size();
+            
+            for(int i=0;i<quantInimigos;i++)
             {
                 if(setor.getInimigosDoSetor().get(i).getDefesa()==0)
                 {
